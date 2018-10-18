@@ -44,6 +44,8 @@ def draw_box_plot(df, x=[], y=[], title="E vs Subfeature", with_swarmplot=False)
 
 
 df_mean_std = pd.DataFrame(dtype=float)
+writer = pd.ExcelWriter("result.xlsx", engine='openpyxl')
+
 for N in Ns:
     df_samples = pd.DataFrame(dtype=float)
     coll_names = ["sample_1", "sample_2", "sample_3", "sample_4", "sample_5", "sample_6", "sample_7", "sample_8", "sample_9", "sample_10"]
@@ -73,11 +75,19 @@ for N in Ns:
     print("sample's mean, std, N = {}".format(N))
     print(df_sample_mean_std)
 
+    df_samples.to_excel(writer, index=False, sheet_name="sample_{}".format(N))
+    df_sample_mean_std.to_excel(writer, startcol=df_samples.shape[1]+2, index=False, sheet_name="sample_{}".format(N))
+
 print("========================================")
 print("mean, std of sample's means According to Ns".format(N))
 print(df_mean_std)
+df_mean_std.to_excel(writer, index=False, sheet_name="total")
+writer.save()
 
-print(df_mean_std.index)
+# df_mean_std.to_excel("result.xlsx", sheet_name="Sheet1")
+# df_samples.to_excel("result.xlsx", sheet_name="Sheet1")
+
+# print(df_mean_std.index)
 title="E vs Subfeature",
 fig = plt.figure()
 # fig.suptitle(title, fontsize=20)
