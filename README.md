@@ -6,7 +6,7 @@ homework1 on Statistics
 sudo pip3 install requirements.txt
 ```
 ## Usage
-* Vending Machine
+* run script
 ```
-cd vending_machine && python3 main.py
+cd python3 sample_mean_comparison.py
 ```
