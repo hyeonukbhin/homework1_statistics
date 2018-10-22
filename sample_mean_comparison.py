@@ -27,18 +27,6 @@ def add_df(index, columns, value, df=None):
     return df
 
 
-def draw_box_plot(df, x=[], y=[], title="E vs Subfeature", with_swarmplot=False):
-    fig = plt.figure(figsize=(30, 15))
-    fig.suptitle(title, fontsize=20)
-
-    for idx, val in enumerate(x):
-        ax = fig.add_subplot("{}{}{}".format(len(x), 1, idx + 1))
-        sns.boxplot(x=df[val], y=df[y[idx]], ax=ax)
-        ax.grid(color='k', linestyle='-', linewidth=0.5)
-        if with_swarmplot is True:
-            sns.swarmplot(x=df[val], y=df[y[idx]], color="0.9", ax=ax)
-
-
 df_mean_std = pd.DataFrame(dtype=float)
 writer = pd.ExcelWriter("result.xlsx", engine='openpyxl')
 
@@ -57,9 +45,9 @@ for N in Ns:
         df_sample_mean_std = add_df(coll_name, "std", std, df_sample_mean_std)
 
     mean, _ = cal_mean_std(df_sample_mean_std["mean"])
-    _, std = cal_mean_std(df_sample_mean_std["std"])
+    _, std_of_mean = cal_mean_std(df_sample_mean_std["mean"])
     df_mean_std = add_df(N, "mean", mean, df_mean_std)
-    df_mean_std = add_df(N, "std", std, df_mean_std)
+    df_mean_std = add_df(N, "std_of_mean", std_of_mean, df_mean_std)
 
     print("========================================")
     print("sample raw data, N = {}".format(N))
@@ -80,6 +68,6 @@ writer.save()
 title = "E vs Subfeature",
 fig = plt.figure()
 plt.plot(df_mean_std.index, df_mean_std["mean"], label="mean")
-plt.plot(df_mean_std.index, df_mean_std["std"], label="std")
+plt.plot(df_mean_std.index, df_mean_std["std_of_mean"], label="std_of_mean")
 plt.legend()
 plt.show()
